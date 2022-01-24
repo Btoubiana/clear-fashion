@@ -192,7 +192,9 @@ console.log(brandz_datesort);
 // The p90 value (90th percentile) is the lower value expected to be exceeded in 90% of the products
 
 
-
+for (var brand in brandz) {
+    console.log(" Brand : " + brand + ", p90 : " + 0.09*brandz[brand].length);
+};
 
 
 /**
@@ -267,11 +269,28 @@ const COTELE_PARIS = [
 // // 1. Log if we have new products only (true or false)
 // // A new product is a product `released` less than 2 weeks.
 
+COTELE_PARIS.every(function (element, index) {
+    console.log(element);
+
+    if (COTELE_PARIS[index].released > '2022-01-10')
+        console.log(true);
+    else
+        console.log(false);
+});
+
 
 // 🎯 TODO: Reasonable price
 // // 1. Log if coteleparis is a reasonable price shop (true or false)
 // // A reasonable price if all the products are less than 100€
 
+COTELE_PARIS.some(function (element, index) {
+    console.log(element);
+
+    if (element.price < '100')
+        console.log(true);
+    else
+        console.log(false);
+});
 
 // 🎯 TODO: Find a specific product
 // 1. Find the product with the uuid `b56c6d88-749a-5b4c-b571-e5b5c6483131`
