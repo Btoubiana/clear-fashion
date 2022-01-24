@@ -32,8 +32,8 @@ console.log(MY_FAVORITE_BRANDS[0]);
 // I can find on these e-shops
 // 2. Log the variable
 
-
-
+const cheapest = "https://adresse.paris/t-shirts-et-polos/3983-t-shirt-ranelagh-1300000259194.html";
+console.log(cheapest);
 
 
 /**
@@ -48,6 +48,9 @@ console.log(MY_FAVORITE_BRANDS[0]);
 // 🎯 TODO: Number of products
 // 1. Create a variable and assign it the number of products
 // 2. Log the variable
+
+const marketlength = marketplace.length;
+console.log(marketlength);
 
 
 // 🎯 TODO: Brands name
