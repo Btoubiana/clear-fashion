@@ -58,11 +58,30 @@ console.log(marketlength);
 // 2. Log the variable
 // 3. Log how many brands we have
 
+let brands = [];
+for (var i = 0; i < marketplace.length; i++) {
+    if (brands.includes(marketplace[i].brand) == false) {
+        brands.push(marketplace[i].brand);
+    }
+}
+console.log(brands);
+
 
 // 🎯 TODO: Sort by price
 // 1. Create a function to sort the marketplace products by price
 // 2. Create a variable and assign it the list of products by price from lowest to highest
 // 3. Log the variable
+
+function sort_by_key(array, key) {
+    return array.sort(function (a, b) {
+        var x = a[key]; var y = b[key];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
+}
+
+let marketsort_price = [];
+marketsort_price = sort_by_key(marketplace, "price");
+console.log(marketsort_price);
 
 
 // 🎯 TODO: Sort by date
@@ -70,18 +89,27 @@ console.log(marketlength);
 // 2. Create a variable and assign it the list of products by date from recent to old
 // 3. Log the variable
 
+let marketsort_date = [];
+marketsort_date = sort_by_key(marketplace, "date");
+console.log(marketsort_price);
 
 // 🎯 TODO: Filter a specific price range
 // 1. Filter the list of products between 50€ and 100€
 // 2. Log the list
 
+const marketfilter_price = marketplace.filter(market => (market.price > 50 && market.price < 100));
+console.log(marketfilter_price);
 
 // 🎯 TODO: Average price
 // 1. Determine the average price of the marketplace
 // 2. Log the average
 
-
-
+let avg_price = 0;
+for (var i = 0; i < marketplace.length; i++) {
+    avg_price += marketplace[i].price;
+}
+avg_price = avg_price / marketlength;
+console.log(avg_price);
 
 
 /**
@@ -104,21 +132,52 @@ console.log(marketlength);
 //   'brand-name-n': [{...}, {...}, ..., {...}],
 // };
 //
+const brandz = {};
+brands.forEach(name => {
+    brandz[name] = [];
+    marketplace.forEach(item => {
+        if (name == item.brand) {
+            brandz[name].push(item);
+        }
+    });
+});
 // 2. Log the variable
+console.log(brandz);
 // 3. Log the number of products by brands
-
+for (var brand in brandz) {
+    console.log('Brand : ' + brand  + '| Number of products : ' + brandz[brand].length );
+}
 
 // 🎯 TODO: Sort by price for each brand
 // 1. For each brand, sort the products by price, from highest to lowest
 // 2. Log the sort
 
+function sortbyPrice(tableau) {
+    for (var i = 0; i < tableau.length; i++) {
+        sort_by_key(tableau[i], "price");
+        tableau[i] = tableau[i].reverse();
+    }
+    return tableau;
+}
+let brandz_pricesort = sortbyPrice(brandz);
+console.log(brandz_pricesort);
+
 
 // 🎯 TODO: Sort by date for each brand
+    
 // 1. For each brand, sort the products by date, from old to recent
 // 2. Log the sort
 
 
-
+function sortbyDate(tableau) {
+    for (var i = 0; i < tableau.length; i++) {
+        sort_by_key(tableau[i], "date");
+        tableau[i] = tableau[i].reverse();
+    }
+    return tableau;
+}
+let brandz_datesort = sortbyDate(brandz);
+console.log(brandz_datesort);
 
 
 /**
