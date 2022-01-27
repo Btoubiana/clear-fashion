@@ -1,4 +1,4 @@
-// Invoking strict mode https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode#invoking_strict_mode
+﻿// Invoking strict mode https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode#invoking_strict_mode
 'use strict';
 
 // current products on the page
@@ -12,14 +12,14 @@ const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
 
 const selectBrand = document.querySelector('#brand-select');
-
 /**
  * Set global value
  * @param {Array} result - products to display
  * @param {Object} meta - pagination meta info
  */
-const setCurrentProducts = ({result, meta}) => {
-  currentProducts = result;
+const setCurrentProducts = ({ result, meta }) => {
+    meta.pageSize = selectShow.options[selectShow.selectedIndex].value;
+    currentProducts = result;
     currentPagination = meta;
 };
 
@@ -44,7 +44,7 @@ const fetchProducts = async (page = 1, size = 12) => {
 
     return body.data;
   } catch (error) {
-    console.error(error);
+      console.error(error);
     return {currentProducts, currentPagination};
   }
 };
@@ -53,26 +53,52 @@ const fetchProducts = async (page = 1, size = 12) => {
  * Render list of products
  * @param  {Array} products
  */
+//const renderProducts = products => {
+//  const fragment = document.createDocumentFragment();
+//  const div = document.createElement('div');
+//  const template = products
+//    .map(product => {
+//      return `
+//      <div class="product" id=${product.uuid}>
+//        <span>${product.brand}</span>
+//        <a href="${product.link}">${product.name}</a>
+//        <span>${product.price}</span>
+//      </div>
+//    `;
+//    })
+//    .join('');
+
+//  div.innerHTML = template;
+//  fragment.appendChild(div);
+//  sectionProducts.innerHTML = '<h2>Products</h2>';
+//  sectionProducts.appendChild(fragment);
+//};
 const renderProducts = products => {
-  const fragment = document.createDocumentFragment();
-  const div = document.createElement('div');
-  const template = products
-    .map(product => {
-      return `
+    const fragment = document.createDocumentFragment();
+    const div = document.createElement('div');
+    if (selectBrand.options[selectBrand.selectedIndex].value != "All") {
+        const brandFilter = products.filter(product => product.brand == selectBrand.options[selectBrand.selectedIndex].value);
+        products = brandFilter;
+    }
+    console.log(selectBrand.options[selectBrand.selectedIndex].value);
+    const template = products
+        .map(product => {
+            return `
       <div class="product" id=${product.uuid}>
         <span>${product.brand}</span>
         <a href="${product.link}">${product.name}</a>
         <span>${product.price}</span>
       </div>
     `;
-    })
-    .join('');
+        })
+        .join('');
 
-  div.innerHTML = template;
-  fragment.appendChild(div);
-  sectionProducts.innerHTML = '<h2>Products</h2>';
-  sectionProducts.appendChild(fragment);
+    div.innerHTML = template;
+    fragment.appendChild(div);
+    sectionProducts.innerHTML = '<h2>Products</h2>';
+    sectionProducts.appendChild(fragment);
 };
+
 
 /**
  * Render page selector
@@ -105,17 +131,6 @@ const render = (products, pagination) => {
   renderIndicators(pagination);
 };
 
-// Brand filtering method
-
-function brandFilter(brand = selectBrand) {
-    filteredProducts = [];
-    for (var i = 0; i < currentProducts.length; i++) {
-        if (currentProducts[i].brand == brand) {
-            filteredProducts.push(currentProducts[i]);
-        }
-        return filteredProducts;
-    }
-}
 /**
  * Declaration of all Listeners
  */
@@ -123,23 +138,20 @@ function brandFilter(brand = selectBrand) {
 /**
  * Select the number of products to display
  */
-selectShow.addEventListener('change', async (event) => {
-  const products = await fetchProducts(currentPagination.currentPage, parseInt(event.target.value));
-
-  setCurrentProducts(products);
-  render(currentProducts, currentPagination);
+selectShow.addEventListener('change', event => {
+  fetchProducts(currentPagination.currentPage, parseInt(event.target.value))
+      .then(setCurrentProducts)
+    .then(() => render(currentProducts, currentPagination));
 });
 
-<<<<<<< HEAD
+/* brand filter listener */
 selectBrand.addEventListener('change', event => {
-    fetchProducts(currentPagination.currentPage, currentProducts.length)
-        .then(setCurrentProducts)
-        .then(() => render(brandFilter(), currentPagination));
+ render(currentProducts, currentPagination);
 });
 
 /* page selection listener */
 selectPage.addEventListener('change', event => {
-    fetchProducts(parseInt(event.target.value), currentProducts.length)
+    fetchProducts(parseInt(event.target.value), currentPagination.pageSize)
         .then(setCurrentProducts)
         .then(() => render(currentProducts, currentPagination));
 });
