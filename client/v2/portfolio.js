@@ -105,17 +105,6 @@ const render = (products, pagination) => {
   renderIndicators(pagination);
 };
 
-// Brand filtering method
-
-function brandFilter(brand = selectBrand) {
-    filteredProducts = [];
-    for (var i = 0; i < currentProducts.length; i++) {
-        if (currentProducts[i].brand == brand) {
-            filteredProducts.push(currentProducts[i]);
-        }
-        return filteredProducts;
-    }
-}
 /**
  * Declaration of all Listeners
  */
@@ -133,12 +122,12 @@ selectShow.addEventListener('change', event => {
 selectBrand.addEventListener('change', event => {
     fetchProducts(currentPagination.currentPage, currentProducts.length)
         .then(setCurrentProducts)
-        .then(() => render(brandFilter(), currentPagination));
+        .then(() => render(currentProducts, currentPagination));
 });
 
 /* page selection listener */
 selectPage.addEventListener('change', event => {
-    fetchProducts(parseInt(event.target.value), currentProducts.length)
+    fetchProducts(parseInt(event.target.value), currentPagination.pageCount)
         .then(setCurrentProducts)
         .then(() => render(currentProducts, currentPagination));
 });
