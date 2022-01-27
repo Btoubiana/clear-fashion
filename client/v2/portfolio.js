@@ -202,6 +202,8 @@ const renderIndicators = (products, pagination) => {
     spanP90.innerHTML = Percentiles(90, products);
     spanP95.innerHTML = Percentiles(95, products);
 
+    // Most recently added item indicator
+
     products.sort(function (b, a) {
         return parseInt(a.released) - parseInt(b.released);
     });
