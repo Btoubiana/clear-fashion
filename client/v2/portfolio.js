@@ -22,6 +22,8 @@ const spanP50 = document.querySelector('#p50');
 const spanP90 = document.querySelector('#p90');
 const spanP95 = document.querySelector('#p95');
 const spanReleased = document.querySelector('#released');
+
+const checkFavourite = document.querySelector('#favourite-check');
 /**
  * Set global value
  * @param {Array} result - products to display
@@ -142,7 +144,7 @@ const renderProducts = products => {
         <span>${product.brand}</span>
         <a href="${product.link}">${product.name}</a>
         <span>${product.price}</span>
-        <span>${product.released}</span>
+        <input type="checkbox" id="favourite-check">
       </div>
     `;
         })
