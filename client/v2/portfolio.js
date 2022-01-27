@@ -17,6 +17,11 @@ const checkReasonablePrice = document.querySelector('#reasonable-check');
 const checkRecent = document.querySelector('#recently-check');
 const selectSort = document.querySelector('#sort-select');
 const spanNbNewProducts = document.querySelector('#nbNewProducts');
+
+// Instantiate pertentile const
+const spanP50 = document.querySelector('#p50');
+const spanP90 = document.querySelector('#p90');
+const spanP95 = document.querySelector('#p95');
 /**
  * Set global value
  * @param {Array} result - products to display
@@ -163,6 +168,14 @@ const renderPagination = pagination => {
   selectPage.selectedIndex = currentPage - 1;
 };
 
+
+// Percentile calculator 
+
+const Percentiles = (nb, products) => {
+    const indexPercentile = Math.round(nb / 100 * products.length);
+    return products[indexPercentile].price;
+}
+
 /**
  * Render page selector
  * @param  {Object} pagination
@@ -177,6 +190,14 @@ const renderIndicators = (products, pagination) => {
     let today = new Date().toLocaleDateString();
     const recentFilter = products.filter(product => product.released > today);
     spanNbNewProducts.innerHTML = recentFilter.length;
+
+    // Percentiles (50, 90, 95 of the product list)
+
+    spanP50.innerHTML = Percentiles(50, products);
+    spanP90.innerHTML = Percentiles(90, products);
+    spanP95.innerHTML = Percentiles(95, products);
+
+
 };
 
 const render = (products, pagination) => {
