@@ -12,6 +12,7 @@ const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
 
 const selectBrand = document.querySelector('#brand-select');
+const checkReasonablePrice = document.querySelector('#reasonable-check')
 /**
  * Set global value
  * @param {Array} result - products to display
@@ -80,7 +81,11 @@ const renderProducts = products => {
         const brandFilter = products.filter(product => product.brand == selectBrand.options[selectBrand.selectedIndex].value);
         products = brandFilter;
     }
-    console.log(selectBrand.options[selectBrand.selectedIndex].value);
+    if (checkReasonablePrice.checked == true) {
+        const reasonableFilter = products.filter(product => product.price < 100);
+        products = reasonableFilter;
+    }
+    console.log(checkReasonablePrice.checked);
     const template = products
         .map(product => {
             return `
@@ -142,6 +147,10 @@ selectShow.addEventListener('change', event => {
   fetchProducts(currentPagination.currentPage, parseInt(event.target.value))
       .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination));
+});
+
+checkReasonablePrice.addEventListener('change', event => {
+    (render(currentProducts, currentPagination))
 });
 
 /* brand filter listener */
