@@ -18,10 +18,11 @@ const checkRecent = document.querySelector('#recently-check');
 const selectSort = document.querySelector('#sort-select');
 const spanNbNewProducts = document.querySelector('#nbNewProducts');
 
-// Instantiate pertentile const
+// Instantiate indicators
 const spanP50 = document.querySelector('#p50');
 const spanP90 = document.querySelector('#p90');
 const spanP95 = document.querySelector('#p95');
+const spanReleased = document.querySelector('#released');
 /**
  * Set global value
  * @param {Array} result - products to display
@@ -193,11 +194,19 @@ const renderIndicators = (products, pagination) => {
 
     // Percentiles (50, 90, 95 of the product list)
 
+    products.sort(function (a, b) {
+        return parseInt(a.price) - parseInt(b.price);
+    });
+
     spanP50.innerHTML = Percentiles(50, products);
     spanP90.innerHTML = Percentiles(90, products);
     spanP95.innerHTML = Percentiles(95, products);
 
+    products.sort(function (b, a) {
+        return parseInt(a.released) - parseInt(b.released);
+    });
 
+    spanReleased.innerHTML = products[0].released;
 };
 
 const render = (products, pagination) => {
