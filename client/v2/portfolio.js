@@ -14,6 +14,7 @@ const spanNbProducts = document.querySelector('#nbProducts');
 const selectBrand = document.querySelector('#brand-select');
 const checkReasonablePrice = document.querySelector('#reasonable-check');
 const checkRecent = document.querySelector('#recently-check');
+const selectSort = document.querySelector('#sort-select');
 /**
  * Set global value
  * @param {Array} result - products to display
@@ -94,7 +95,14 @@ const renderProducts = products => {
         products = recentFilter;
     }
 
-    console.log(checkRecent.checked);
+    let nbSort = selectSort.selectedIndex;
+    if (nbSort == 0) {
+
+        products.sort(function (a, b) {
+            return parseInt(a.price) - parseInt(b.price);
+        });
+    }
+    console.log(products.length);
     const template = products
         .map(product => {
             return `
@@ -102,7 +110,6 @@ const renderProducts = products => {
         <span>${product.brand}</span>
         <a href="${product.link}">${product.name}</a>
         <span>${product.price}</span>
-        <span>${product.released}</span>
       </div>
     `;
         })
@@ -134,10 +141,9 @@ const renderPagination = pagination => {
  * Render page selector
  * @param  {Object} pagination
  */
-const renderIndicators = pagination => {
-  const {count} = pagination;
-
-  spanNbProducts.innerHTML = count;
+const renderIndicators = (pagination) => {
+    const { count } = pagination;
+    spanNbProducts.innerHTML = count;
 };
 
 const render = (products, pagination) => {
