@@ -1,6 +1,5 @@
 ﻿// Invoking strict mode https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode#invoking_strict_mode
 'use strict';
-
 // current products on the page
 let currentProducts = [];
 let currentPagination = {};
@@ -97,9 +96,10 @@ const renderProducts = products => {
     }
 
     if (checkRecent.checked == true) {
-        let today = new Date().toLocaleDateString();
-        console.log(today);
-        const recentFilter = products.filter(product => product.released > today);
+        var d = new Date();
+        d.setDate(d.getDate() - 14);
+        let dstring = d.getFullYear() + "-" + d.getMonth() + "-"+ d.getDay();
+        const recentFilter = products.filter(product => product.released > dstring);
         products = recentFilter;
     }
 
@@ -121,7 +121,7 @@ const renderProducts = products => {
 
     if (nbSort == 2) {
 
-        products.sort(function (a, b) {
+        products.sort(function (b, a) {
             return parseInt(a.released) - parseInt(b.released);
         });
 
@@ -129,7 +129,7 @@ const renderProducts = products => {
 
     if (nbSort == 3) {
 
-        products.sort(function (b, a) {
+        products.sort(function (a, b) {
             return parseInt(a.released) - parseInt(b.released);
         });
 
@@ -142,6 +142,7 @@ const renderProducts = products => {
         <span>${product.brand}</span>
         <a href="${product.link}">${product.name}</a>
         <span>${product.price}</span>
+        <span>${product.released}</span>
       </div>
     `;
         })
@@ -188,8 +189,10 @@ const renderIndicators = (products, pagination) => {
     spanNbProducts.innerHTML = count;
 
     // Recent articles indicator
-    let today = new Date().toLocaleDateString();
-    const recentFilter = products.filter(product => product.released > today);
+    var d = new Date();
+    d.setDate(d.getDate() - 14);
+    let dstring = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDay();
+    const recentFilter = products.filter(product => product.released > dstring);
     spanNbNewProducts.innerHTML = recentFilter.length;
 
     // Percentiles (50, 90, 95 of the product list)
