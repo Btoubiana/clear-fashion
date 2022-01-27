@@ -11,6 +11,8 @@ const selectPage = document.querySelector('#page-select');
 const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
 
+const selectBrand = document.querySelector('#brand-select');
+
 /**
  * Set global value
  * @param {Array} result - products to display
@@ -18,9 +20,10 @@ const spanNbProducts = document.querySelector('#nbProducts');
  */
 const setCurrentProducts = ({result, meta}) => {
   currentProducts = result;
-  currentPagination = meta;
+    currentPagination = meta;
 };
 
+console.log(currentPagination);
 /**
  * Fetch products from api
  * @param  {Number}  [page=1] - current page to fetch
@@ -102,6 +105,17 @@ const render = (products, pagination) => {
   renderIndicators(pagination);
 };
 
+// Brand filtering method
+
+function brandFilter(brand = selectBrand) {
+    filteredProducts = [];
+    for (var i = 0; i < currentProducts.length; i++) {
+        if (currentProducts[i].brand == brand) {
+            filteredProducts.push(currentProducts[i]);
+        }
+        return filteredProducts;
+    }
+}
 /**
  * Declaration of all Listeners
  */
@@ -114,6 +128,19 @@ selectShow.addEventListener('change', event => {
   fetchProducts(currentPagination.currentPage, parseInt(event.target.value))
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination));
+});
+
+selectBrand.addEventListener('change', event => {
+    fetchProducts(currentPagination.currentPage, currentProducts.length)
+        .then(setCurrentProducts)
+        .then(() => render(brandFilter(), currentPagination));
+});
+
+/* page selection listener */
+selectPage.addEventListener('change', event => {
+    fetchProducts(parseInt(event.target.value), currentProducts.length)
+        .then(setCurrentProducts)
+        .then(() => render(currentProducts, currentPagination));
 });
 
 document.addEventListener('DOMContentLoaded', () =>
