@@ -11,10 +11,12 @@ const selectPage = document.querySelector('#page-select');
 const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
 
+// Custom const variables
 const selectBrand = document.querySelector('#brand-select');
 const checkReasonablePrice = document.querySelector('#reasonable-check');
 const checkRecent = document.querySelector('#recently-check');
 const selectSort = document.querySelector('#sort-select');
+const spanNbNewProducts = document.querySelector('#nbNewProducts');
 /**
  * Set global value
  * @param {Array} result - products to display
@@ -165,15 +167,22 @@ const renderPagination = pagination => {
  * Render page selector
  * @param  {Object} pagination
  */
-const renderIndicators = (pagination) => {
+const renderIndicators = (products, pagination) => {
+
+    //total amount of articles
     const { count } = pagination;
     spanNbProducts.innerHTML = count;
+
+    // Recent articles indicator
+    let today = new Date().toLocaleDateString();
+    const recentFilter = products.filter(product => product.released > today);
+    spanNbNewProducts.innerHTML = recentFilter.length;
 };
 
 const render = (products, pagination) => {
   renderProducts(products);
   renderPagination(pagination);
-  renderIndicators(pagination);
+  renderIndicators(products, pagination);
 };
 
 /**
@@ -189,14 +198,17 @@ selectShow.addEventListener('change', event => {
     .then(() => render(currentProducts, currentPagination));
 });
 
+// cheap articles filter listener
 checkReasonablePrice.addEventListener('change', event => {
     (render(currentProducts, currentPagination))
 });
 
+// recent articles filter listener
 checkRecent.addEventListener('change', event => {
     (render(currentProducts, currentPagination))
 });
 
+//sort selection listener
 selectSort.addEventListener('change', event => {
     (render(currentProducts, currentPagination))
 });
