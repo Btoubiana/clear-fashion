@@ -12,7 +12,8 @@ const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
 
 const selectBrand = document.querySelector('#brand-select');
-const checkReasonablePrice = document.querySelector('#reasonable-check')
+const checkReasonablePrice = document.querySelector('#reasonable-check');
+const checkRecent = document.querySelector('#recently-check');
 /**
  * Set global value
  * @param {Array} result - products to display
@@ -85,7 +86,15 @@ const renderProducts = products => {
         const reasonableFilter = products.filter(product => product.price < 100);
         products = reasonableFilter;
     }
-    console.log(checkReasonablePrice.checked);
+
+    if (checkRecent.checked == true) {
+        let today = new Date().toLocaleDateString();
+        console.log(today);
+        const recentFilter = products.filter(product => product.released > today);
+        products = recentFilter;
+    }
+
+    console.log(checkRecent.checked);
     const template = products
         .map(product => {
             return `
@@ -93,6 +102,7 @@ const renderProducts = products => {
         <span>${product.brand}</span>
         <a href="${product.link}">${product.name}</a>
         <span>${product.price}</span>
+        <span>${product.released}</span>
       </div>
     `;
         })
@@ -152,6 +162,11 @@ selectShow.addEventListener('change', event => {
 checkReasonablePrice.addEventListener('change', event => {
     (render(currentProducts, currentPagination))
 });
+
+checkRecent.addEventListener('change', event => {
+    (render(currentProducts, currentPagination))
+});
+
 
 /* brand filter listener */
 selectBrand.addEventListener('change', event => {
