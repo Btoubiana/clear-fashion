@@ -101,6 +101,14 @@ const renderProducts = products => {
         products.sort(function (a, b) {
             return parseInt(a.price) - parseInt(b.price);
         });
+
+    }
+    if (nbSort == 1) {
+
+        products.sort(function (b, a) {
+            return parseInt(a.price) - parseInt(b.price);
+        });
+
     }
     console.log(products.length);
     const template = products
@@ -170,6 +178,10 @@ checkReasonablePrice.addEventListener('change', event => {
 });
 
 checkRecent.addEventListener('change', event => {
+    (render(currentProducts, currentPagination))
+});
+
+selectSort.addEventListener('change', event => {
     (render(currentProducts, currentPagination))
 });
 
