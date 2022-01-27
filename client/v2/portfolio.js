@@ -110,6 +110,22 @@ const renderProducts = products => {
         });
 
     }
+
+    if (nbSort == 2) {
+
+        products.sort(function (a, b) {
+            return parseInt(a.released) - parseInt(b.released);
+        });
+
+    }
+
+    if (nbSort == 3) {
+
+        products.sort(function (b, a) {
+            return parseInt(a.released) - parseInt(b.released);
+        });
+
+    }
     console.log(products.length);
     const template = products
         .map(product => {
