@@ -1,10 +1,11 @@
 require('dotenv').config();
 const {MongoClient} = require('mongodb');
 const fs = require('fs');
+const { find } = require('cheerio/lib/api/traversing');
 
-const MONGODB_DB_NAME = 'clearfashion';
+const MONGODB_DB_NAME = 'WepApp';
 const MONGODB_COLLECTION = 'products';
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI = 'mongodb+srv://admin:<admin>@cluster0.tk0ap.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 
 let client = null;
 let database = null;
@@ -80,6 +81,8 @@ module.exports.close = async () => {
   try {
     await client.close();
   } catch (error) {
-    console.error('🚨 MongoClient.close...', error);
+    console.error('🚨 MongoClient.close...', error); 
   }
 };
+
+//find({_id: '6224d7bbbd83330249f40497' });
