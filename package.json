@@ -4,6 +4,7 @@
     "dotenv": "^16.0.0",
     "mongodb": "^4.4.1",
     "node-fetch": "^3.2.0",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "vercel": "^24.0.0"
   }
 }
