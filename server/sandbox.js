@@ -2,13 +2,13 @@
 const dedicatedbrand = require('./sources/dedicatedbrand');
 const montlimart = require('./sources/montlimart');
 const adresseparis = require('./sources/adresseparis');
+const loom = require('./sources/loom');
 const fs = require('fs');
 
 const {MongoClient} = require('mongodb');
-const MONGODB_URI = 'mongodb+srv://admin:admin@cluster0.tk0ap.mongodb.net/Cluster0?retryWrites=true&w=majority';
+const MONGODB_URI = 'mongodb+srv://admin:wMicBfqyyOAk6dxR@Cluster0.tk0ap.mongodb.net/webapp?retryWrites=true&w=majority';
 const MONGODB_DB_NAME = 'clearfashion';
 const MONGODB_COLLECTION = 'products';
-
 
 
 async function sandbox (/*eshop = 'https://www.dedicatedbrand.com/en/men/news'*/) {
@@ -21,20 +21,11 @@ async function sandbox (/*eshop = 'https://www.dedicatedbrand.com/en/men/news'*/
     'https://www.dedicatedbrand.com/en/men/all-men#page=3',
     'https://www.dedicatedbrand.com/en/men/all-men#page=4',
     'https://www.dedicatedbrand.com/en/men/all-men#page=5',
-    'https://www.dedicatedbrand.com/en/men/all-men#page=6',
-    'https://www.dedicatedbrand.com/en/men/all-men#page=7',
-    'https://www.dedicatedbrand.com/en/men/all-men#page=8',
-    'https://www.dedicatedbrand.com/en/men/all-men#page=9',
-    'https://www.dedicatedbrand.com/en/men/all-men#page=10',
     'https://www.dedicatedbrand.com/en/women/all-women#page=1',
     'https://www.dedicatedbrand.com/en/women/all-women#page=2',
     'https://www.dedicatedbrand.com/en/women/all-women#page=3',
     'https://www.dedicatedbrand.com/en/women/all-women#page=4',
     'https://www.dedicatedbrand.com/en/women/all-women#page=5',
-    'https://www.dedicatedbrand.com/en/women/all-women#page=6',
-    'https://www.dedicatedbrand.com/en/women/all-women#page=7',
-    'https://www.dedicatedbrand.com/en/women/all-women#page=8',
-    'https://www.dedicatedbrand.com/en/women/all-women#page=9',
     'https://www.dedicatedbrand.com/en/kids/t-shirts#page=1',
     'https://www.dedicatedbrand.com/en/kids/t-shirts#page=2',
     'https://www.dedicatedbrand.com/en/kids/sweatshirts',
@@ -70,8 +61,16 @@ async function sandbox (/*eshop = 'https://www.dedicatedbrand.com/en/men/news'*/
       products.push(results.flat());
     }
 
+    // loom scrapping
+    pages = ['https://www.loom.fr/collections/tous-les-vetements'];
+    console.log(`🕵️‍♀️  scraping ${pages}`);
+    results = await loom.scrape(pages);
+    console.log(`👕 ${results.length} products found`);
+    products.push(results.flat());
+
     products = products.flat();
     console.log(`👕 ${products.length} total of products found`);
+
     // save products into json file
     //fs.writeFileSync('all_products.json', JSON.stringify(products));
 
@@ -81,15 +80,6 @@ async function sandbox (/*eshop = 'https://www.dedicatedbrand.com/en/men/news'*/
     const collection = db.collection('products');
     const result = collection.insertMany(products);
     console.log(result);
-
-
-
-
-    /*console.log(`🕵️‍♀️  browsing ${eshop} source`);
-    const products = await dedicatedbrand.scrape(eshop);
-    console.log(products);
-    console.log('done');
-    process.exit(0);*/
 
   } catch (e) {
     console.error(e);
